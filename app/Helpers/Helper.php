@@ -112,7 +112,7 @@ function didITypeUnicode($text)
 function sendMessage($numbers, $contents, $sender_name = null)
 {
     $gateways = Smsgateway::whereStatus(1)->orderByRaw('CAST(priority AS SIGNED)')->get();
-
+    
     foreach ($gateways as $gateway) {
         $response = $gateway->namespace::send_message($gateway, $numbers, $contents, $sender_name);
         session()->put('gateway_id', $gateway->id);

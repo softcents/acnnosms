@@ -54,14 +54,19 @@ class SmsGatewayController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'status' => 'required|integer',
-            'params' => 'required|array',
-            'params.*' => 'required|string',
             'priority' => 'nullable|integer',
             'name' => 'required|string|unique:smsgateways,name',
             'type_id' => 'required|exists:gateway_types,id',
-        ]);
+        ];
+
+        if($request->type_id != 25){
+            $rules['params'] = 'required|array';
+            $rules['params.*'] = 'required|string';
+        }
+
+        $request->validate($rules);
 
         $type = GatewayType::findOrFail($request->type_id);
 
@@ -95,14 +100,17 @@ class SmsGatewayController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
+        $rules = [
             'status' => 'required|integer',
-            'params' => 'required|array',
-            'params.*' => 'required|string',
             'priority' => 'nullable|integer',
+            'name' => 'required|string|unique:smsgateways,name',
             'type_id' => 'required|exists:gateway_types,id',
-            'name' => 'required|string|unique:smsgateways,name,'.$id
-        ]);
+        ];
+
+        if($request->type_id != 25){
+            $rules['params'] = 'required|array';
+            $rules['params.*'] = 'required|string';
+        }
 
         $gateway = Smsgateway::findOrFail($id);
         $type = GatewayType::findOrFail($request->type_id);

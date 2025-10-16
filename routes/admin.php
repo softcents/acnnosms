@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin as ADMIN;
 
 Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['admin']], function () {
+    Route::get('/send-sms', function() {
+        $response = sendMessage('01812615198', 'Hello, This is sms testing', 'Rimon');
+        dd($response);
+    })->name('send-sms');
+
     Route::get('/', [ADMIN\DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/get-dashboard', [Admin\DashboardController::class, 'getDashboardData'])->name('dashboard.data');
     Route::get('/yearly-statistics', [Admin\DashboardController::class, 'yearlyStatistics'])->name('dashboard.statistics');

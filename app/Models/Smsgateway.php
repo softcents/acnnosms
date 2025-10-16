@@ -21,6 +21,7 @@ class Smsgateway extends Model
         'status',
         'params',
         'driver',
+        'namespace',
     ];
 
     /**
